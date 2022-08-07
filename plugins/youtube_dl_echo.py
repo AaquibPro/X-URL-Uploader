@@ -79,7 +79,7 @@ async def echo(bot, update):
             await pablo.edit_text('Uploading...')
             start_time = time.time()
             if xfiletype in ['video/mp4', 'video/x-matroska', 'video/webm']:
-                await bot.send_video(
+                video = await bot.send_video(
                     chat_id=update.chat.id,
                     video=dldir,
                     caption=file_name,
@@ -92,10 +92,10 @@ async def echo(bot, update):
                         start_time
                     )
                 )
-                video_f = video.forward.forward(Config.LOG_CHANNEL)
+                video_f = video.forward(Config.LOG_CHANNEL)
                 await video_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + '\nLK21 URL: ' + url)
             elif xfiletype == 'audio/mpeg':
-                await bot.send_audio(
+                audio = await bot.send_audio(
                     chat_id=update.chat.id,
                     audio=dldir,
                     caption=file_name,
@@ -111,7 +111,7 @@ async def echo(bot, update):
                 audio_f = await audio.forward(Config.LOG_CHANNEL)
                 await audio_f.reply_text("Name: " + str(update.from_user.first_name) + "\nUser ID: " + "<code>" + str(update.from_user.id) + "</code>" + '\nLK21 URL: ' + url)
             else:
-                await bot.send_document(
+                doc = await bot.send_document(
                     chat_id=update.chat.id,
                     document=dldir,
                     caption=file_name,
@@ -269,13 +269,13 @@ async def echo(bot, update):
                         # special weird case :\
                         ikeyboard = [
                             InlineKeyboardButton(
-                                "SVideo [" +
+                                "SVideo📽 [" +
                                 "] ( " +
                                 approx_file_size + " )",
                                 callback_data=(cb_string_video).encode("UTF-8")
                             ),
                             InlineKeyboardButton(
-                                "DFile [" +
+                                "DFile 📁[" +
                                 "] ( " +
                                 approx_file_size + " )",
                                 callback_data=(cb_string_file).encode("UTF-8")
@@ -288,13 +288,13 @@ async def echo(bot, update):
                     cb_string = "{}|{}|{}".format("audio", "320k", "mp3")
                     inline_keyboard.append([
                         InlineKeyboardButton(
-                            "MP3 " + "(" + "64 kbps" + ")", callback_data=cb_string_64.encode("UTF-8")),
+                            "MP3 🎵" + "(" + "64 kbps" + ")", callback_data=cb_string_64.encode("UTF-8")),
                         InlineKeyboardButton(
-                            "MP3 " + "(" + "128 kbps" + ")", callback_data=cb_string_128.encode("UTF-8"))
+                            "MP3🎵 " + "(" + "128 kbps" + ")", callback_data=cb_string_128.encode("UTF-8"))
                     ])
                     inline_keyboard.append([
                         InlineKeyboardButton(
-                            "MP3 " + "(" + "320 kbps" + ")", callback_data=cb_string.encode("UTF-8"))
+                            "MP3🎵 " + "(" + "320 kbps" + ")", callback_data=cb_string.encode("UTF-8"))
                     ])
             else:
                 format_id = response_json["format_id"]
@@ -305,11 +305,11 @@ async def echo(bot, update):
                     "video", format_id, format_ext)
                 inline_keyboard.append([
                     InlineKeyboardButton(
-                        "SVideo",
+                        "SVideo📽",
                         callback_data=(cb_string_video).encode("UTF-8")
                     ),
                     InlineKeyboardButton(
-                        "DFile",
+                        "DFile📁",
                         callback_data=(cb_string_file).encode("UTF-8")
                     )
                 ])
@@ -366,11 +366,11 @@ async def echo(bot, update):
                 "video", "OFL", "ENON")
             inline_keyboard.append([
                 InlineKeyboardButton(
-                    "SVideo",
+                    "SVideo📽",
                     callback_data=(cb_string_video).encode("UTF-8")
                 ),
                 InlineKeyboardButton(
-                    "DFile",
+                    "DFile📁",
                     callback_data=(cb_string_file).encode("UTF-8")
                 )
             ])
